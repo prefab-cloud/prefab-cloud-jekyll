@@ -25,7 +25,7 @@ Jekyll::Hooks.register :pages, :post_render do |page|
     callback = File.read(file)
   end
 
-  source_file = File.expand_path('../prefab.js', __FILE__)
+  source_file = File.expand_path('../prefab/prefab.js', __FILE__)
   js_content = File.read(source_file)
 
   if page.output_ext == '.html'
