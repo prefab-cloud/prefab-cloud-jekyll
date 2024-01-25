@@ -1,5 +1,5 @@
 module Jekyll
-  class FeatureFlagTagBlock < PrefabBaseBlock
+  class FeatureFlagTagBlock < Liquid::Block
     def initialize(tag_name, flag_name, tokens)
       super
       @flag_name = flag_name.strip

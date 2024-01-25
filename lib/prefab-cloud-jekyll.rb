@@ -1,10 +1,8 @@
 require 'fileutils'
 
-require 'prefab/base_block'
-require 'prefab/feature_flag'
-require 'prefab/variant_default'
-require 'prefab/variant'
 require 'prefab/config'
+require 'prefab/feature_flag'
+require 'prefab/variant'
 
 def snake_to_camel(obj)
   case obj
@@ -49,7 +47,6 @@ Jekyll::Hooks.register :pages, :post_render do |page|
   end
 end
 
+Liquid::Template.register_tag('config', Jekyll::ConfigTag)
 Liquid::Template.register_tag('feature_flag', Jekyll::FeatureFlagTagBlock)
 Liquid::Template.register_tag('variant', Jekyll::VariantTagBlock)
-Liquid::Template.register_tag('variant_default', Jekyll::VariantDefaultTagBlock)
-Liquid::Template.register_tag('config', Jekyll::ConfigTag)
