@@ -20,9 +20,15 @@ end
 
 Jekyll::Hooks.register :pages, :post_render do |page|
   config = page.site.config['prefab']
+
   if config['after_evaluation_callback']
     file = File.join(page.site.source, config['after_evaluation_callback'])
-    callback = File.read(file)
+    after_evaluation_callback = File.read(file)
+  end
+
+  if config['identify_callback']
+    file = File.join(page.site.source, config['identify_callback'])
+    identify_callback = File.read(file)
   end
 
   source_file = File.expand_path('../prefab/prefab.js', __FILE__)
@@ -36,9 +42,9 @@ Jekyll::Hooks.register :pages, :post_render do |page|
     ></script>
     <script type=\"text/javascript\">
       const config = #{snake_to_camel(config).to_json};
-      console.log(config);
-
-      afterEvaluationCallback = (key, value) => {#{callback}};
+      
+      afterEvaluationCallback = (key, value) => {#{after_evaluation_callback}};
+      identifyCallback = (trackingId) => {#{identify_callback}};
 
       #{js_content}
     </script>
