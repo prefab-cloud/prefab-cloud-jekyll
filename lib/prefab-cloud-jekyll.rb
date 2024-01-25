@@ -5,32 +5,40 @@ require 'prefab/feature_flag'
 require 'prefab/variant_default'
 require 'prefab/variant'
 
-Jekyll::Hooks.register :site, :post_write do |site|
-  source_file = File.expand_path('../prefab.js', __FILE__)
-  destination = File.join(site.dest, 'assets')
-  
-  FileUtils.mkdir_p(destination) unless File.exist?(destination)
-  FileUtils.cp(source_file, destination)
+def snake_to_camel(obj)
+  case obj
+  when Hash
+    obj.each_with_object({}) do |(k, v), result|
+      key = k.to_s.gsub(/_([a-z])/) { $1.upcase }
+      result[key] = snake_to_camel(v)
+    end
+  when Array
+    obj.map { |v| snake_to_camel(v) }
+  else
+    obj
+  end
 end
 
 Jekyll::Hooks.register :pages, :post_render do |page|
-  api_key = page.site.config['prefab']['api_key']
+  config = snake_to_camel(page.site.config['prefab'])
+
+  source_file = File.expand_path('../prefab.js', __FILE__)
+  js_content = File.read(source_file)
 
   if page.output_ext == '.html'
-    script_tag = "
+    script_tags = "
     <script
       src=\"https://cdn.jsdelivr.net/npm/@prefab-cloud/prefab-cloud-js@0.2.3/dist/prefab.bundle.js\"
       type=\"text/javascript\"
     ></script>
     <script type=\"text/javascript\">
-      window.prefabPlugin = {
-        apiKey: \"#{api_key}\",
-        // TODO: forward all client config props
-      };
+      const config = #{config.to_json};
+      console.log(config);
+
+      #{js_content}
     </script>
-    <script src=\"/assets/prefab.js\" type=\"text/javascript\"></script>
     "
-    page.output = page.output.gsub('</head>', "#{script_tag}\n</head>")
+    page.output = page.output.gsub('</head>', "#{script_tags}\n</head>")
   end
 end
 
