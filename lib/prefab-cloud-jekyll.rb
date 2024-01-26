@@ -36,6 +36,11 @@ Jekyll::Hooks.register :pages, :post_render do |page|
 
   if page.output_ext == '.html'
     tags = "
+    <style>
+      .prefab-hidden {
+        display: none;
+      }
+    </style>
     <script
       src=\"https://cdn.jsdelivr.net/npm/@prefab-cloud/prefab-cloud-js@0.2.3/dist/prefab.bundle.js\"
       type=\"text/javascript\"
@@ -48,11 +53,6 @@ Jekyll::Hooks.register :pages, :post_render do |page|
 
       #{js_content}
     </script>
-    <style>
-      .prefab-hidden {
-        display: none;
-      }
-    </style>
     "
     page.output = page.output.gsub('</head>', "#{tags}\n</head>")
   end
