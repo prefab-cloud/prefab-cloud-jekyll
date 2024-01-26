@@ -31,6 +31,11 @@ Jekyll::Hooks.register :pages, :post_render do |page|
     identify_callback = File.read(file)
   end
 
+  if config['tracking_id_callback']
+    file = File.join(page.site.source, config['tracking_id_callback'])
+    tracking_id_callback = File.read(file)
+  end
+
   source_file = File.expand_path('../prefab/prefab.js', __FILE__)
   js_content = File.read(source_file)
 
@@ -50,6 +55,7 @@ Jekyll::Hooks.register :pages, :post_render do |page|
 
       afterEvaluationCallback = (key, value) => {#{after_evaluation_callback}};
       identifyCallback = (trackingId) => {#{identify_callback}};
+      tidCallback = () => {#{tracking_id_callback}};
 
       #{js_content}
     </script>

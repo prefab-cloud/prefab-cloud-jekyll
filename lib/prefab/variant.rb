@@ -55,6 +55,7 @@ module Jekyll
         end
       end
 
+      # Render children
       doc.to_html
     end
 

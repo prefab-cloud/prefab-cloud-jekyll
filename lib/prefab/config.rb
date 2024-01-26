@@ -1,6 +1,5 @@
 module Jekyll
   class ConfigTag < Liquid::Tag
-
     def initialize(tag_name, markup, tokens)
       super
       if markup =~ /^\s*key:(\S+)\s+default:"([^"]+)"\s*$/i
