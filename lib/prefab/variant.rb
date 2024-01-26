@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module Jekyll
   class VariantTagBlock < Liquid::Block
     def render_with_formatting(content, context)
@@ -36,13 +38,24 @@ module Jekyll
     end
 
     def render(context)
-      content = render_with_formatting(super, context)
+      html = render_with_formatting(super, context)
 
-      if @default
-        "<div class=\"prefab-variant\" data-flag-name=\"#{context["flag_name"]}\" data-variant=\"#{@value}\">#{content}</div>"
-      else
-        "<div class=\"prefab-variant\" data-flag-name=\"#{context["flag_name"]}\" data-variant=\"#{@value}\" style=\"display: none\">#{content}</div>"
+      doc = Nokogiri::HTML::DocumentFragment.parse(html)
+
+      # Select and modify only the immediate children of the root element
+      doc.children.each do |child|
+        # Add the data attribute if the child is an element
+        if child.element?
+          child["data-flag-name"] = context["flag_name"]
+          child["data-variant"] = @value
+          if !@default
+            classes = child["class"] ? child["class"].strip + " " : ""
+            child["class"] = classes + "prefab-hidden"
+          end
+        end
       end
+
+      doc.to_html
     end
 
   end

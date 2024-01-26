@@ -11,10 +11,28 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeff Dwyer".freeze]
-  s.date = "2024-01-24"
+  s.date = "2024-01-26"
   s.description = "Feature Flags, Live Config, and Dynamic Log Levels as a service".freeze
   s.email = "jdwyer@prefab.cloud".freeze
-  s.homepage = "http://github.com/prefab-cloud/prefab-cloud-ruby".freeze
+  s.extra_rdoc_files = [
+    "LICENSE",
+    "README.md"
+  ]
+  s.files = [
+    "Gemfile",
+    "Gemfile.lock",
+    "LICENSE",
+    "README.md",
+    "Rakefile",
+    "VERSION",
+    "lib/prefab-cloud-jekyll.rb",
+    "lib/prefab/config.rb",
+    "lib/prefab/feature_flag.rb",
+    "lib/prefab/prefab.js",
+    "lib/prefab/variant.rb",
+    "prefab-cloud-jekyll.gemspec"
+  ]
+  s.homepage = "http://github.com/prefab-cloud/prefab-cloud-jekyll".freeze
   s.licenses = ["MIT".freeze]
   s.rubygems_version = "3.3.7".freeze
   s.summary = "Prefab Ruby Infrastructure".freeze
@@ -24,8 +42,10 @@ Gem::Specification.new do |s|
   end
 
   if s.respond_to? :add_runtime_dependency then
+    s.add_runtime_dependency(%q<nokogiri>.freeze, [">= 0"])
     s.add_development_dependency(%q<juwelier>.freeze, ["~> 2.4.9"])
   else
+    s.add_dependency(%q<nokogiri>.freeze, [">= 0"])
     s.add_dependency(%q<juwelier>.freeze, ["~> 2.4.9"])
   end
 end
