@@ -1,18 +1,21 @@
 module Jekyll
   class ConfigTag < Liquid::Tag
-    def initialize(tag_name, markup, tokens)
+    def initialize(tag_name, param_string, tokens)
       super
-      if markup =~ /^\s*key:(\S+)\s+default:"([^"]+)"\s*$/i
-        # If the syntax is with a default value
-        @key = $1.strip
-        @default = $2
-      elsif markup.strip =~ /^\S+$/
-        # Basic config shorthand syntax
-        @key = markup.strip
+
+      # split in half at the first space
+      # limit to two chunks to support spaces in the default value
+      params = param_string.strip.split(" ", 2)
+      puts params
+
+      if params.length == 1
+        @key = params[0]
         @default = nil
+      elsif params.length == 2 && params[0].start_with?("key:") && params[1].start_with?("default:")
+        @key = params[0].split(":", 2)[1]
+        @default = params[1].split(":", 2)[1]
       else
-        # If syntax does not match either format, raise a syntax error
-        raise SyntaxError, "Syntax Error in 'config' - Valid syntax: {% config key:my-config default:\"some string\" %} or {% config my-config %}"
+        raise SyntaxError, "Syntax Error in 'config' with params #{param_string} - Valid syntax: {% config config-name %} or {% config key:config-name default:some string %} "
       end
     end
 

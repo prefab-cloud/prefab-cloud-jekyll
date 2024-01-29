@@ -17,23 +17,25 @@ module Jekyll
       end
     end
 
-    def initialize(tag_name, markup, tokens)
+    def initialize(tag_name, param_string, tokens)
       super
-      if markup =~ /^\s*value:(\S+)\s+default:"([^"]+)"\s*$/i
-        # If the syntax is with a value and a default value
-        @value = $1.strip
-        @default = $2
-      elsif markup =~ /^\s*default:"([^"]+)"\s*$/i
-        # If the syntax is with just a default value
-        @default = $1
+
+      # split in half at the first space
+      # limit to two chunks to support spaces in the default value
+      params = param_string.strip.split(" ", 2)
+      puts params
+
+      if params.length == 1 && params[0] == "default:true"
         @value = nil
-      elsif markup.strip =~ /^\S+$/
-        # Basic config shorthand syntax
-        @value = markup.strip
-        @default = nil
+        @default = true
+      elsif params.length == 1
+        @value = params[0]
+        @default = false
+      elsif params.length == 2 && params[0].start_with?("value:") && params[1] == "default:true"
+        @value = params[0].split(":", 2)[1]
+        @default = true
       else
-        # If syntax does not match any expected format, raise a syntax error
-        raise SyntaxError, "Syntax Error in 'variant' - Valid syntaxes: {% variant value:my-value default:\"some string\" %}, {% variant default:\"some string\" %}, or {% variant my-value %}"
+        raise SyntaxError, "Syntax Error in 'variant' with params #{param_string} - Valid syntax: {% variant variant-name %} or {% variant default:true %} or {% variant key:variant-name default:true %} "
       end
     end
 
