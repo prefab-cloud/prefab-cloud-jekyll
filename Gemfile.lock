@@ -1,12 +1,31 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
-    builder (3.2.4)
+    activesupport (8.0.0)
+      base64
+      benchmark (>= 0.3)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.3.1)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      logger (>= 1.4.2)
+      minitest (>= 5.1)
+      securerandom (>= 0.3)
+      tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
+    base64 (0.2.0)
+    benchmark (0.4.0)
+    bigdecimal (3.1.8)
+    builder (3.3.0)
+    concurrent-ruby (1.3.4)
+    connection_pool (2.4.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    faraday (1.10.3)
+    drb (2.2.1)
+    faraday (1.10.4)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -24,13 +43,15 @@ GEM
     faraday-httpclient (1.0.1)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (1.0.1)
+    faraday-net_http (1.0.2)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
-    git (1.19.1)
+    git (2.3.2)
+      activesupport (>= 5.0)
       addressable (~> 2.8)
+      process_executer (~> 1.1)
       rchardet (~> 1.8)
     github_api (0.19.0)
       addressable (~> 2.4)
@@ -39,7 +60,11 @@ GEM
       hashie (~> 3.5, >= 3.5.2)
       oauth2 (~> 1.0)
     hashie (3.6.0)
-    highline (3.0.1)
+    highline (3.1.1)
+      reline
+    i18n (1.14.6)
+      concurrent-ruby (~> 1.0)
+    io-console (0.7.2)
     juwelier (2.4.9)
       builder
       bundler
@@ -52,23 +77,27 @@ GEM
       rake
       rdoc
       semver2
-    jwt (2.7.1)
+    jwt (2.9.3)
+      base64
     kamelcase (0.0.2)
       semver2 (~> 3)
+    logger (1.6.1)
+    minitest (5.25.1)
     multi_json (1.15.0)
-    multi_xml (0.6.0)
-    multipart-post (2.3.0)
-    nokogiri (1.16.0-aarch64-linux)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
+    multipart-post (2.4.1)
+    nokogiri (1.16.7-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.16.0-arm-linux)
+    nokogiri (1.16.7-arm-linux)
       racc (~> 1.4)
-    nokogiri (1.16.0-arm64-darwin)
+    nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.0-x86-linux)
+    nokogiri (1.16.7-x86-linux)
       racc (~> 1.4)
-    nokogiri (1.16.0-x86_64-darwin)
+    nokogiri (1.16.7-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.0-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     oauth2 (1.4.11)
       faraday (>= 0.17.3, < 3.0)
@@ -76,19 +105,26 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
-    psych (5.1.2)
+    process_executer (1.2.0)
+    psych (5.2.0)
       stringio
-    public_suffix (5.0.4)
-    racc (1.7.3)
-    rack (3.0.8)
-    rake (13.1.0)
+    public_suffix (6.0.1)
+    racc (1.8.1)
+    rack (3.1.8)
+    rake (13.2.1)
     rchardet (1.8.0)
-    rdoc (6.6.2)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
+    reline (0.5.11)
+      io-console (~> 0.5)
     ruby2_keywords (0.0.5)
+    securerandom (0.3.2)
     semver2 (3.4.2)
-    stringio (3.1.0)
+    stringio (3.1.2)
     thread_safe (0.3.6)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    uri (1.0.2)
 
 PLATFORMS
   aarch64-linux
@@ -100,6 +136,7 @@ PLATFORMS
 
 DEPENDENCIES
   juwelier (~> 2.4.9)
+  nokogiri
 
 BUNDLED WITH
    2.5.5
